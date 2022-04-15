@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
@@ -51,17 +52,11 @@ fun MovieRow(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Surface(
                 modifier = Modifier
-                    .padding(15.dp, 5.dp, 5.dp, 5.dp),
+                    .padding(15.dp, 5.dp, 5.dp, 5.dp)
+                    .weight(20f),
                 elevation = 4.dp,
                 shape = RoundedCornerShape(corner = CornerSize(5.dp))
             ) {
-//                Icon(
-//                    imageVector = Icons.Default.AccountBox,
-//                    contentDescription = "Profile picture",
-//                    modifier = Modifier
-//                        .width(100.dp)
-//                        .height(100.dp)
-//                )
                 Image(
                     painter = rememberImagePainter(
                         data = movie.images[0],
@@ -70,13 +65,15 @@ fun MovieRow(
                         }
                     ),
                     contentDescription = "Movie poster",
-                    modifier = Modifier.size(100.dp).padding(10.dp)
+                    modifier = Modifier
+                        .size(100.dp)
+                        .padding(10.dp)
                 )
             }
-            Column {
+            Column(modifier = Modifier.weight(40f)) {
                 Text(text = movie.title, style = MaterialTheme.typography.h6)
-                Text(text = "Director: " + movie.director)
-                Text(text = "Released: " + movie.year)
+                Text(text = "Director: " + movie.director, style = MaterialTheme.typography.subtitle1)
+                Text(text = "Released: " + movie.year, style = MaterialTheme.typography.subtitle1)
 
                 AnimatedVisibility(
                     visible = descriptionVisible,
@@ -88,11 +85,11 @@ fun MovieRow(
                     exit = shrinkVertically()
                 ) {
                     Column(modifier = Modifier.padding(5.dp)) {
-                        Text("Plot: " + movie.plot, Modifier.fillMaxWidth())
+                        Text("Plot: " + movie.plot, Modifier.fillMaxWidth(), style = MaterialTheme.typography.body1)
                         Divider(startIndent = 5.dp)
-                        Text("Genre: " + movie.genre, Modifier.fillMaxWidth())
-                        Text("Actors: " + movie.actors, Modifier.fillMaxWidth())
-                        Text("Rating: " + movie.rating, Modifier.fillMaxWidth())
+                        Text("Genre: " + movie.genre, Modifier.fillMaxWidth(), style = MaterialTheme.typography.body1)
+                        Text("Actors: " + movie.actors, Modifier.fillMaxWidth(), style = MaterialTheme.typography.body1)
+                        Text("Rating: " + movie.rating, Modifier.fillMaxWidth(), style = MaterialTheme.typography.body1)
                     }
                 }
                 Icon(imageVector = if (descriptionVisible) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
@@ -102,6 +99,7 @@ fun MovieRow(
                     }
                 )
             }
+            FavouriteIcon()
         }
     }
 }
@@ -111,7 +109,10 @@ fun HorizontalScrollableImageView(movie: Movie = getMovies()[0]){
     LazyRow{
         items(movie.images) { image ->
             Card(
-                modifier = Modifier.padding(12.dp).height(200.dp).width(240.dp),
+                modifier = Modifier
+                    .padding(12.dp)
+                    .height(200.dp)
+                    .width(240.dp),
                 elevation = 4.dp
             ) {
                 Image(
@@ -121,4 +122,9 @@ fun HorizontalScrollableImageView(movie: Movie = getMovies()[0]){
             }
         }
     }
+}
+
+@Composable
+fun FavouriteIcon(){
+    Icon(imageVector = Icons.Default.Favorite, contentDescription = "FavouriteIcon")
 }

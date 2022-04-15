@@ -16,17 +16,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import at.ac.fhcampuswien.movieapplication.FavouritesViewModel
 import at.ac.fhcampuswien.movieapplication.models.getMovies
 import at.ac.fhcampuswien.movieapplication.widgets.MovieRow
 
 @Composable
-fun FavouriteScreen(navController: NavController){
-    var movieList = getMovies()
-    var favouriteList = listOf(
-        movieList[0],
-        movieList[2],
-        movieList[4]
-    )
+fun FavouriteScreen(navController: NavController, viewModel: FavouritesViewModel){
+    var favouriteList = viewModel.GetAllFavouriteMovies()
     MainContent(navController = navController){
         LazyColumn{
             items(favouriteList) { movie ->

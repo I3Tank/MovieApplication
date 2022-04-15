@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "at.ac.fhcampuswien.movieapplication"
-        minSdk 29
+        minSdk 24
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -65,4 +65,7 @@ dependencies {
 
     //Coil
     implementation "io.coil-kt:coil-compose:$coil_version"
+
+    // ViewModel utilities for Compose
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
 }
