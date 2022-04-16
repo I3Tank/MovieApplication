@@ -27,7 +27,11 @@ fun FavouriteScreen(navController: NavController, viewModel: FavouritesViewModel
         LazyColumn{
             items(favouriteList) { movie ->
                 //OnClick for our MovieCard
-                MovieRow(movie = movie)
+                MovieRow(
+                    movie = movie,
+                    isFavourite = viewModel.CheckIfMovieIsFavourite(movie),
+                    showFavIcon = false
+                )
             }
         }
     }

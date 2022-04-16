@@ -8,8 +8,6 @@ class FavouritesViewModel : ViewModel() {
     val favoriteMovies: List<Movie>
         get() = _favoriteMovies
 
-
-
     fun AddMovieToFavorites(movie: Movie){
         if(!CheckIfMovieIsFavourite(movie)){
             _favoriteMovies.add(movie)

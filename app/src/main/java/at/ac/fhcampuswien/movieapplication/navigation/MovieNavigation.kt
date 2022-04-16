@@ -16,14 +16,13 @@ fun MovieNavigation(){
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "homescreen"){
 
-        composable("homescreen") { HomeScreen(navController = navController) }
+        composable("homescreen") { HomeScreen(navController = navController, viewModel = favouritesViewModel) }
         composable(
             "detailscreen/{movieId}",
             arguments = listOf(navArgument("movieId"){})
             ) { backStackEntry ->
-            DetailScreen(navController = navController, movieId = backStackEntry.arguments?.getString("movieId"))
+            DetailScreen(navController = navController, movieId = backStackEntry.arguments?.getString("movieId"), viewModel = favouritesViewModel)
         }
         composable("favouritescreen") { FavouriteScreen(navController = navController, viewModel = favouritesViewModel)}
     }
-
 }

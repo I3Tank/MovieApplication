@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.movieapplication.widgets
 
+import android.util.Log.d
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.spring
@@ -15,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
@@ -23,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import at.ac.fhcampuswien.movieapplication.models.Movie
 import at.ac.fhcampuswien.movieapplication.models.getMovies
+import at.ac.fhcampuswien.movieapplication.ui.theme.Teal200
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 
@@ -32,7 +35,10 @@ import coil.transform.CircleCropTransformation
 @Composable
 fun MovieRow(
     movie : Movie,
-    onItemClick: (String) -> Unit = {}
+    isFavourite: Boolean,
+    showFavIcon: Boolean,
+    onItemClick: (String) -> Unit = {},
+    onFavouriteIconClick: (Movie) -> Unit = {}
 ) {
     var descriptionVisible by remember {
         mutableStateOf(false)
@@ -52,8 +58,7 @@ fun MovieRow(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Surface(
                 modifier = Modifier
-                    .padding(15.dp, 5.dp, 5.dp, 5.dp)
-                    .weight(20f),
+                    .padding(15.dp, 5.dp, 5.dp, 5.dp),
                 elevation = 4.dp,
                 shape = RoundedCornerShape(corner = CornerSize(5.dp))
             ) {
@@ -70,7 +75,7 @@ fun MovieRow(
                         .padding(10.dp)
                 )
             }
-            Column(modifier = Modifier.weight(40f)) {
+            Column(modifier = Modifier.weight(30f)){
                 Text(text = movie.title, style = MaterialTheme.typography.h6)
                 Text(text = "Director: " + movie.director, style = MaterialTheme.typography.subtitle1)
                 Text(text = "Released: " + movie.year, style = MaterialTheme.typography.subtitle1)
@@ -99,7 +104,14 @@ fun MovieRow(
                     }
                 )
             }
-            FavouriteIcon()
+            if(showFavIcon) {
+                FavouriteIcon(
+                    modifier = Modifier.weight(10f),
+                    movie = movie,
+                    isFavourite,
+                    onFavouriteIconClick
+                )
+            }
         }
     }
 }
@@ -125,6 +137,21 @@ fun HorizontalScrollableImageView(movie: Movie = getMovies()[0]){
 }
 
 @Composable
-fun FavouriteIcon(){
-    Icon(imageVector = Icons.Default.Favorite, contentDescription = "FavouriteIcon")
+fun FavouriteIcon(
+    modifier: Modifier = Modifier,
+    movie: Movie,
+    isFavourite: Boolean,
+    onFavouriteIconClick: (Movie) -> Unit = {}
+) {
+    Icon(
+        imageVector =
+        if(isFavourite){Icons.Default.Favorite}
+        else {Icons.Default.FavoriteBorder},
+        contentDescription = "FavouriteIcon",
+        modifier = modifier.clickable {
+            d("FAVOOO", "FavIcon")
+            onFavouriteIconClick(movie)
+        },
+        tint = Teal200
+    )
 }

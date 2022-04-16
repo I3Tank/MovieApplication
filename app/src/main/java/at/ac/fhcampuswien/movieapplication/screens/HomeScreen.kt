@@ -1,6 +1,7 @@
 package at.ac.fhcampuswien.movieapplication
 
 import android.util.Log
+import android.util.Log.d
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.spring
@@ -29,7 +30,7 @@ import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, viewModel: FavouritesViewModel) {
     var showMenu by remember {
         mutableStateOf(false)
     }
@@ -62,18 +63,43 @@ fun HomeScreen(navController: NavController) {
                 })
             }
         ) {
-        MainContent(navController = navController)
+        MainContent(navController = navController, viewModel = viewModel)
     }
 }
 
 @Composable
-fun MainContent(navController: NavController, movies: List<Movie> = getMovies()){
-    LazyColumn{
+fun MainContent(navController: NavController,viewModel: FavouritesViewModel, movies: List<Movie> = getMovies()) {
+
+    var isFav by remember{
+        mutableStateOf(false)
+    }
+
+    LazyColumn {
         items(movies) { movie ->
-            //OnClick for our MovieCard
-            MovieRow(movie = movie){ movieId ->
-                navController.navigate("detailscreen/$movieId")
-            }
+            isFav = viewModel.CheckIfMovieIsFavourite(movie)
+            MovieRow(
+                movie = movie,
+                isFavourite = isFav,
+                showFavIcon = true,
+                //OnClick for our MovieCard
+                onItemClick = { movieId ->
+                    navController.navigate("detailscreen/$movieId")
+                },
+                //OnClick for the Favourite Icon
+                onFavouriteIconClick = { movie ->
+                    isFav = viewModel.CheckIfMovieIsFavourite(movie)
+                    if(isFav){
+                        viewModel.RemoveMovieFromFavourites(movie)
+                        isFav = false
+                        d("FAVOOO", "remove")
+                    }
+                    else{
+                        viewModel.AddMovieToFavorites(movie)
+                        isFav = true
+                        d("FAVOOO", "add")
+                    }
+                }
+            )
         }
     }
 }
