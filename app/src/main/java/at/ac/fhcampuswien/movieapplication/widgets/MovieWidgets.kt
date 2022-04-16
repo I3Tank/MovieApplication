@@ -38,7 +38,7 @@ fun MovieRow(
     isFavourite: Boolean,
     showFavIcon: Boolean,
     onItemClick: (String) -> Unit = {},
-    onFavouriteIconClick: (Movie) -> Unit = {}
+    onFavouriteIconClick: () -> Unit = {}
 ) {
     var descriptionVisible by remember {
         mutableStateOf(false)
@@ -107,12 +107,33 @@ fun MovieRow(
             if(showFavIcon) {
                 FavouriteIcon(
                     modifier = Modifier.weight(10f),
-                    movie = movie,
-                    isFavourite,
-                    onFavouriteIconClick
+                    isFavourite = isFavourite,
+                    onFavouriteIconClick = onFavouriteIconClick
                 )
             }
         }
+    }
+}
+
+@Composable
+fun FavouriteIcon(
+    modifier: Modifier,
+    isFavourite: Boolean,
+    onFavouriteIconClick: () -> Unit = {}
+){
+    IconButton(
+        modifier = modifier,
+        onClick = { onFavouriteIconClick() }) {
+        Icon(
+            contentDescription = "Favourite Icon",
+            tint = Teal200,
+            imageVector =
+            if (isFavourite) {
+                Icons.Default.Favorite
+            } else {
+                Icons.Default.FavoriteBorder
+            }
+        )
     }
 }
 
@@ -134,24 +155,4 @@ fun HorizontalScrollableImageView(movie: Movie = getMovies()[0]){
             }
         }
     }
-}
-
-@Composable
-fun FavouriteIcon(
-    modifier: Modifier = Modifier,
-    movie: Movie,
-    isFavourite: Boolean,
-    onFavouriteIconClick: (Movie) -> Unit = {}
-) {
-    Icon(
-        imageVector =
-        if(isFavourite){Icons.Default.Favorite}
-        else {Icons.Default.FavoriteBorder},
-        contentDescription = "FavouriteIcon",
-        modifier = modifier.clickable {
-            d("FAVOOO", "FavIcon")
-            onFavouriteIconClick(movie)
-        },
-        tint = Teal200
-    )
 }

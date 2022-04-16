@@ -76,7 +76,7 @@ fun MainContent(navController: NavController,viewModel: FavouritesViewModel, mov
 
     LazyColumn {
         items(movies) { movie ->
-            isFav = viewModel.CheckIfMovieIsFavourite(movie)
+            isFav = viewModel.CheckIfMovieIsFavourite(movie = movie)
             MovieRow(
                 movie = movie,
                 isFavourite = isFav,
@@ -86,17 +86,15 @@ fun MainContent(navController: NavController,viewModel: FavouritesViewModel, mov
                     navController.navigate("detailscreen/$movieId")
                 },
                 //OnClick for the Favourite Icon
-                onFavouriteIconClick = { movie ->
-                    isFav = viewModel.CheckIfMovieIsFavourite(movie)
+                onFavouriteIconClick = {
+                    isFav = viewModel.CheckIfMovieIsFavourite(movie = movie)
                     if(isFav){
                         viewModel.RemoveMovieFromFavourites(movie)
                         isFav = false
-                        d("FAVOOO", "remove")
                     }
                     else{
                         viewModel.AddMovieToFavorites(movie)
                         isFav = true
-                        d("FAVOOO", "add")
                     }
                 }
             )

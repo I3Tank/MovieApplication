@@ -40,10 +40,10 @@ fun DetailScreen(navController: NavController, movieId: String?, viewModel: Favo
             Column {
                 MovieRow(
                     movie = movie,
-                    isFavourite = viewModel.CheckIfMovieIsFavourite(movie),
+                    isFavourite = isFav,
                     showFavIcon = true,
-                    onFavouriteIconClick = { movie ->
-                        //isFav = viewModel.CheckIfMovieIsFavourite(movie)
+                    onFavouriteIconClick = {
+                        isFav = viewModel.CheckIfMovieIsFavourite(movie)
                         if(isFav){
                             viewModel.RemoveMovieFromFavourites(movie)
                             isFav = false
