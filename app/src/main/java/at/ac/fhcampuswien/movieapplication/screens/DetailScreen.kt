@@ -79,7 +79,7 @@ fun MainContent(movieTitle: String, navController: NavController, content: @Comp
                             navController.popBackStack()
                         })
                     Spacer(modifier = Modifier.width(20.dp))
-                    Text(text = movieTitle)
+                    Text(text = movieTitle, style = MaterialTheme.typography.h6)
                 }
             }
         }
